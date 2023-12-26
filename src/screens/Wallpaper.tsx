@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Alert, PermissionsAndroid, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import MaterialYou from 'react-native-material-you-colors';
 import {
@@ -16,6 +16,7 @@ import {MainStackParams} from '../types/Navigator';
 import {getLikedArray, storage} from '../utils/storage';
 //@ts-ignore
 import ManageWallpaper, {TYPE} from 'react-native-manage-wallpaper';
+import RNFetchBlob from 'rn-fetch-blob';
 
 type WallpaperProps = NativeStackScreenProps<MainStackParams, 'Wallpaper'>;
 const Wallpaper = ({navigation, route}: WallpaperProps) => {
@@ -35,6 +36,50 @@ const Wallpaper = ({navigation, route}: WallpaperProps) => {
       setIsLiked(array.includes(image));
     }
   }, [image]);
+
+  const downloadFile = async (imgurl: string) => {
+    const hasPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    );
+    if (hasPermission) {
+      await startDownload(imgurl);
+    } else {
+      const result = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      );
+      if (result === 'denied') {
+        await startDownload(imgurl);
+      }
+    }
+  };
+
+  const startDownload = async (imgurl: string) => {
+    const {config, fs, android} = RNFetchBlob;
+    let RootDir = fs.dirs.PictureDir;
+    try {
+      const res = await config({
+        fileCache: true,
+        addAndroidDownloads: {
+          useDownloadManager: true, // <-- this is the only thing required
+          // Optional, override notification setting (default to true)
+          notification: true,
+          // Optional, but recommended since android DownloadManager will fail when
+          // the url does not contains a file extension, by default the mime type will be text/plain
+          title: Date.now() + '_wp.png',
+          mime: 'image/png',
+          description: 'Your awesome Wallpaper is on the way.',
+          // mediaScannable: true,
+          path: RootDir + '/Wallpapers/' + Date.now() + '_wp.png',
+        },
+      }).fetch('GET', imgurl);
+      if (res.path()) {
+        android.actionViewIntent(res.path(), 'image/png');
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', 'Error downloading');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -74,7 +119,9 @@ const Wallpaper = ({navigation, route}: WallpaperProps) => {
               icon: 'download',
               label: 'Download',
               color: palette.system_accent1[9],
-              onPress: () => console.log('Pressed star'),
+              onPress: () => {
+                downloadFile(image);
+              },
             },
             {
               icon: 'share',
