@@ -1,5 +1,8 @@
 export type MainStackParams = {
   Home: undefined;
   Liked: undefined;
-  Wallpaper: undefined;
+  Wallpaper: {
+    id: string;
+    image: string;
+  };
 };

@@ -1,3 +1,4 @@
+import {useFocusEffect} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
@@ -9,13 +10,14 @@ import SplashScreen from 'react-native-splash-screen';
 import uuid from 'react-native-uuid';
 import ListItem from '../components/ListItem';
 import {MainStackParams} from '../types/Navigator';
+import {getLikedArray} from '../utils/storage';
 
 type HomeProps = NativeStackScreenProps<MainStackParams, 'Home'>;
 const Home = ({navigation}: HomeProps) => {
   const palette = MaterialYou.getMaterialYouPalette();
 
   const [images, setImages] = useState<Array<{id: string; image: string}>>([]);
-
+  const [likedPhotos, setLikedPhotos] = useState<Array<string>>([]);
   const getTenImages = () => {
     const newArray = new Array(10).fill(0).map((_, i) => ({
       id: uuid.v4().toString(),
@@ -35,6 +37,13 @@ const Home = ({navigation}: HomeProps) => {
     getTenImages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const array = getLikedArray();
+      setLikedPhotos(array);
+    }, []),
+  );
 
   const styles = getStyle(palette);
 
@@ -57,7 +66,14 @@ const Home = ({navigation}: HomeProps) => {
         data={images}
         numColumns={2}
         contentContainerStyle={{gap: 4, marginHorizontal: 8}}
-        renderItem={({item}) => <ListItem item={item} key={item.id} />}
+        renderItem={({item}) => (
+          <ListItem
+            item={item}
+            key={item.id}
+            navigation={navigation}
+            likedPhotos={likedPhotos}
+          />
+        )}
         onEndReached={() => getTenImages()}
         ListFooterComponent={() => (
           <ActivityIndicator color={palette.system_accent1[9]} />
