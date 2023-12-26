@@ -26,6 +26,6 @@ class MainActivity : ReactActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         SplashScreen.show(this, R.style.SplashScreenTheme, true)
-        super.onCreate(savedInstanceState)
+        super.onCreate(null)
     }
 }
