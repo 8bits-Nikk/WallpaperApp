@@ -5688,10 +5688,20 @@ react-native-fast-image@^8.6.3:
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.6.3.tgz#6edc3f9190092a909d636d93eecbcc54a8822255"
   integrity sha512-Sdw4ESidXCXOmQ9EcYguNY2swyoWmx53kym2zRsvi+VeFCHEdkO+WG1DK+6W81juot40bbfLNhkc63QnWtesNg==
 
+react-native-manage-wallpaper@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-manage-wallpaper/-/react-native-manage-wallpaper-1.2.1.tgz#2c16c96e326882b1f00ec2e74caa1f1232a88ed1"
+  integrity sha512-qLp3wbwpOPj2JZvubuyXQx+C5nikEx1GVZv9SmRiN5temAOaQGV5vbG2sILCbYBtAszDnFVLaDSlgvRaLCRJ2w==
+
 react-native-material-you-colors@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/react-native-material-you-colors/-/react-native-material-you-colors-0.1.2.tgz#dda83bbbcae096d0f087d78e58a66d4b47148b4f"
   integrity sha512-dCpLGj/bnC0N7JKGnbZ3vYdNi3qL7xR5Zx9DZgjgovKTdgDAIvJT2VQE5y0g3eXAXjmHzXULyoKA+d5+cjbSzw==
+
+react-native-mmkv@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/react-native-mmkv/-/react-native-mmkv-2.11.0.tgz#51b9985f6a5c09fe9c16d8c1861cc2901856ace1"
+  integrity sha512-28PdUHjZJmAw3q+8zJDAAdohnZMpDC7WgRUJxACOMkcmJeqS3u5cKS/lSq2bhf1CvaeIiHYHUWiyatUjMRCDQQ==
 
 react-native-paper@^5.11.4:
   version "5.11.4"
