@@ -17,6 +17,7 @@ import {getLikedArray, storage} from '../utils/storage';
 //@ts-ignore
 import ManageWallpaper, {TYPE} from 'react-native-manage-wallpaper';
 import RNFetchBlob from 'rn-fetch-blob';
+import Share from 'react-native-share';
 
 type WallpaperProps = NativeStackScreenProps<MainStackParams, 'Wallpaper'>;
 const Wallpaper = ({navigation, route}: WallpaperProps) => {
@@ -127,7 +128,20 @@ const Wallpaper = ({navigation, route}: WallpaperProps) => {
               icon: 'share',
               label: 'Share',
               color: palette.system_accent1[9],
-              onPress: () => console.log('Pressed email'),
+              onPress: () => {
+                Share.open({
+                  title: 'Share Wallpaper',
+                  url: image,
+                  message: 'Check out this awesome Wallpaper!',
+                  failOnCancel: false,
+                })
+                  .then(res => {
+                    console.log(res);
+                  })
+                  .catch(err => {
+                    err && console.log(err);
+                  });
+              },
             },
             {
               icon: isLiked ? 'heart' : 'heart-outline',
